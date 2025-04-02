@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Skatteverket xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" omrade="Arbetsgivardeklaration" xmlns="http://xmls.skatteverket.se/se/skatteverket/da/instans/schema/1.1">
+  <Avsandare xmlns="http://xmls.skatteverket.se/se/skatteverket/da/komponent/schema/1.1">
+    <Programnamn>Bokio</Programnamn>
+    <Organisationsnummer>165592151889</Organisationsnummer>
+    <TekniskKontaktperson>
+      <Namn>Alexander Ostrow</Namn>
+      <Telefon>0735243310</Telefon>
+      <Epostadress>digital@t34ms.se</Epostadress>
+    </TekniskKontaktperson>
+    <Skapad>2025-02-12T20:30:36.8004149Z</Skapad>
+  </Avsandare>
+  <Blankettgemensamt xmlns="http://xmls.skatteverket.se/se/skatteverket/da/komponent/schema/1.1">
+    <Arbetsgivare>
+      <AgRegistreradId>165592151889</AgRegistreradId>
+      <Kontaktperson>
+        <Namn>Alexander Ostrow</Namn>
+        <Telefon>0735243310</Telefon>
+        <Epostadress>digital@t34ms.se</Epostadress>
+      </Kontaktperson>
+    </Arbetsgivare>
+  </Blankettgemensamt>
+  <Blankett xmlns="http://xmls.skatteverket.se/se/skatteverket/da/komponent/schema/1.1">
+    <Arendeinformation>
+      <Arendeagare>165592151889</Arendeagare>
+      <Period>202502</Period>
+    </Arendeinformation>
+    <Blankettinnehall>
+      <HU>
+        <ArbetsgivareHUGROUP>
+          <AgRegistreradId faltkod="201">165592151889</AgRegistreradId>
+        </ArbetsgivareHUGROUP>
+        <RedovisningsPeriod faltkod="006">202502</RedovisningsPeriod>
+        <SummaArbAvgSlf faltkod="487">32771</SummaArbAvgSlf>
+        <SummaSkatteavdr faltkod="497">24556</SummaSkatteavdr>
+      </HU>
+    </Blankettinnehall>
+  </Blankett>
+  <Blankett xmlns="http://xmls.skatteverket.se/se/skatteverket/da/komponent/schema/1.1">
+    <Arendeinformation>
+      <Arendeagare>165592151889</Arendeagare>
+      <Period>202502</Period>
+    </Arendeinformation>
+    <Blankettinnehall>
+      <IU>
+        <ArbetsgivareIUGROUP>
+          <AgRegistreradId faltkod="201">165592151889</AgRegistreradId>
+        </ArbetsgivareIUGROUP>
+        <BetalningsmottagareIUGROUP>
+          <BetalningsmottagareIDChoice>
+            <BetalningsmottagarId faltkod="215">197203250555</BetalningsmottagarId>
+          </BetalningsmottagareIDChoice>
+        </BetalningsmottagareIUGROUP>
+        <AndraKostnadsers faltkod="020">0</AndraKostnadsers>
+        <ArbetsplatsensGatuadress faltkod="245">Crafoords väg 14 lgh 1418</ArbetsplatsensGatuadress>
+        <ArbetsplatsensOrt faltkod="246">11324 Stockholm</ArbetsplatsensOrt>
+        <AvdrPrelSkatt faltkod="001">12471</AvdrPrelSkatt>
+        <KontantErsattningUlagAG faltkod="011">52150</KontantErsattningUlagAG>
+        <RedovisningsPeriod faltkod="006">202502</RedovisningsPeriod>
+        <SkatteplBilformanUlagAG faltkod="013">0</SkatteplBilformanUlagAG>
+        <SkatteplOvrigaFormanerUlagAG faltkod="012">0</SkatteplOvrigaFormanerUlagAG>
+        <Specifikationsnummer faltkod="570">1</Specifikationsnummer>
+      </IU>
+    </Blankettinnehall>
+  </Blankett>
+  <Blankett xmlns="http://xmls.skatteverket.se/se/skatteverket/da/komponent/schema/1.1">
+    <Arendeinformation>
+      <Arendeagare>165592151889</Arendeagare>
+      <Period>202502</Period>
+    </Arendeinformation>
+    <Blankettinnehall>
+      <IU>
+        <ArbetsgivareIUGROUP>
+          <AgRegistreradId faltkod="201">165592151889</AgRegistreradId>
+        </ArbetsgivareIUGROUP>
+        <BetalningsmottagareIUGROUP>
+          <BetalningsmottagareIDChoice>
+            <BetalningsmottagarId faltkod="215">197510229250</BetalningsmottagarId>
+          </BetalningsmottagareIDChoice>
+        </BetalningsmottagareIUGROUP>
+        <AndraKostnadsers faltkod="020">0</AndraKostnadsers>
+        <ArbetsplatsensGatuadress faltkod="245">Drottninghusgränd 3</ArbetsplatsensGatuadress>
+        <ArbetsplatsensOrt faltkod="246">11173 Stockholm</ArbetsplatsensOrt>
+        <AvdrPrelSkatt faltkod="001">12085</AvdrPrelSkatt>
+        <KontantErsattningUlagAG faltkod="011">52150</KontantErsattningUlagAG>
+        <RedovisningsPeriod faltkod="006">202502</RedovisningsPeriod>
+        <SkatteplBilformanUlagAG faltkod="013">0</SkatteplBilformanUlagAG>
+        <SkatteplOvrigaFormanerUlagAG faltkod="012">0</SkatteplOvrigaFormanerUlagAG>
+        <Specifikationsnummer faltkod="570">2</Specifikationsnummer>
+      </IU>
+    </Blankettinnehall>
+  </Blankett>
+</Skatteverket>

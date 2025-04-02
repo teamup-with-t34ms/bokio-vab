@@ -32,19 +32,18 @@ const XMLDownloader: React.FC<XMLDownloaderProps> = ({ generateXML, isValid }) =
   return (
     <div className={styles.card}>
       <h2 className={styles.cardTitle}>Download Modified XML</h2>
-      <p>
-        Click the button below to download the XML file with your changes.
-      </p>
-      <button 
+      <p>Click the button below to download the XML file with your changes.</p>
+      <button
         onClick={handleDownload}
         disabled={!isValid}
-        className={styles.button}
-        style={{ opacity: isValid ? 1 : 0.5 }}
+        className={`${styles.button} ${
+          !isValid ? styles.downloadButtonDisabled : ""
+        }`}
       >
         Download XML
       </button>
       {!isValid && (
-        <p style={{ color: 'red' }}>
+        <p className={styles.validationError}>
           Please resolve validation issues before downloading.
         </p>
       )}

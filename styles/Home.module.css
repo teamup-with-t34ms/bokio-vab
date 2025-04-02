@@ -114,3 +114,107 @@
   padding: 0.5rem;
   border-bottom: 1px solid #eaeaea;
 }
+
+/* Improved list styling */
+.listItemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.employeeInfo {
+  flex: 1;
+}
+
+.iconButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #0070f3;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 15px;
+  transition: background-color 0.2s;
+}
+
+.iconButton:hover {
+  background-color: #0060d3;
+}
+
+.expandedContent {
+  margin-top: 1.5rem;
+  padding-left: 1rem;
+  border-left: 3px solid #0070f3;
+}
+
+.franvaroList {
+  list-style: none;
+  padding: 0;
+}
+
+.franvaroItem {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border-left: 3px solid #0070f3;
+}
+
+.errorText {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Additional styles extracted from components */
+.franvaroItemContent {
+  margin-bottom: 0.5rem;
+}
+
+.downloadSection {
+  width: 100%;
+}
+
+.downloadButton {
+  padding: 0.5rem 1rem;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.downloadButtonDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.validationError {
+  color: #dc3545;
+  margin-top: 0.5rem;
+}
+
+.fileUploadForm {
+  width: 100%;
+}
+
+.fileInput {
+  margin-bottom: 1rem;
+}
+
+.fileName {
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+.resetButton {
+  margin-left: 1rem;
+}

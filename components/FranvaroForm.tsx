@@ -5,6 +5,9 @@ interface FranvaroFormProps {
   onSubmit: (data: any) => void;
   betalningsmottagarId?: string; // Optional prop to prefill the ID
   lastAddedDate?: string; // New prop for the last added date
+  periodStart?: string; // First day of the period
+  periodEnd?: string; // Last day of the period
+  period?: string; // The period string (YYYYMM)
 }
 
 interface FormData {
@@ -20,16 +23,35 @@ interface FormData {
 const FranvaroForm: React.FC<FranvaroFormProps> = ({ 
   onSubmit, 
   betalningsmottagarId = '', 
-  lastAddedDate = '' 
+  lastAddedDate = '',
+  periodStart = '',
+  periodEnd = '',
+  period = ''
 }) => {
-  // Initialize with either the next day from lastAddedDate or today's date
+  // Initialize with the appropriate default date:
+  // 1. First day derived from period (e.g., 2025-02-01 from 202502)
+  // 2. First day of period if provided via periodStart
+  // 3. Next day from last added date if available
+  // 4. Today's date as fallback
   const getInitialDate = () => {
+    // If period is in format YYYYMM (e.g., 202502), use it to create date YYYY-MM-01
+    if (period && /^\d{6}$/.test(period)) {
+      const year = period.substring(0, 4);
+      const month = period.substring(4, 6);
+      return `${year}-${month}-01`;
+    }
+    
+    if (periodStart) {
+      return periodStart;
+    }
+    
     if (lastAddedDate) {
       // Calculate next day from last added date
       const date = new Date(lastAddedDate);
       date.setDate(date.getDate() + 1);
       return date.toISOString().split('T')[0];
     }
+    
     return new Date().toISOString().split('T')[0];
   };
 
@@ -55,17 +77,34 @@ const FranvaroForm: React.FC<FranvaroFormProps> = ({
     }
   }, [betalningsmottagarId]);
 
-  // Update date when lastAddedDate changes
+  // Update date when period, periodStart, or lastAddedDate changes
   useEffect(() => {
-    if (lastAddedDate) {
+    let newDate = '';
+    
+    // First priority: parse from period (e.g., 202502 -> 2025-02-01)
+    if (period && /^\d{6}$/.test(period)) {
+      const year = period.substring(0, 4);
+      const month = period.substring(4, 6);
+      newDate = `${year}-${month}-01`;
+    }
+    // Second priority: lastAddedDate + 1 day
+    else if (lastAddedDate) {
       const nextDay = new Date(lastAddedDate);
       nextDay.setDate(nextDay.getDate() + 1);
+      newDate = nextDay.toISOString().split('T')[0];
+    }
+    // Third priority: periodStart
+    else if (periodStart) {
+      newDate = periodStart;
+    }
+    
+    if (newDate) {
       setFormData(prev => ({
         ...prev,
-        franvaroDatum: nextDay.toISOString().split('T')[0]
+        franvaroDatum: newDate
       }));
     }
-  }, [lastAddedDate]);
+  }, [period, lastAddedDate, periodStart]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -96,6 +135,15 @@ const FranvaroForm: React.FC<FranvaroFormProps> = ({
     // Validate Date
     if (!formData.franvaroDatum) {
       newErrors.franvaroDatum = 'Date is required';
+    } else if (periodStart && periodEnd) {
+      // Check if the date is within the period
+      const selectedDate = new Date(formData.franvaroDatum);
+      const startDate = new Date(periodStart);
+      const endDate = new Date(periodEnd);
+      
+      if (selectedDate < startDate || selectedDate > endDate) {
+        newErrors.franvaroDatum = `Date must be within the period (${periodStart} to ${periodEnd})`;
+      }
     }
     
     // Validate Type selected
@@ -164,9 +212,15 @@ const FranvaroForm: React.FC<FranvaroFormProps> = ({
       const nextDay = new Date(formData.franvaroDatum);
       nextDay.setDate(nextDay.getDate() + 1);
       
+      // Only update to next day if it's still within the period
+      let nextDayStr = nextDay.toISOString().split('T')[0];
+      if (periodEnd && new Date(nextDayStr) > new Date(periodEnd)) {
+        nextDayStr = periodEnd;
+      }
+      
       setFormData({
         betalningsmottagarId: formData.betalningsmottagarId, // Keep the personal ID
-        franvaroDatum: nextDay.toISOString().split('T')[0], // Set to next day
+        franvaroDatum: nextDayStr, // Set to next day (within period)
         franvaroTyp: 'TILLFALLIG_FORALDRAPENNING',
         franvaroProcentFP: '',
         franvaroTimmarFP: '',
@@ -193,13 +247,13 @@ const FranvaroForm: React.FC<FranvaroFormProps> = ({
           disabled={!!betalningsmottagarId} // Disable if prefilled
         />
         {errors.betalningsmottagarId && (
-          <div style={{ color: 'red' }}>{errors.betalningsmottagarId}</div>
+          <div className={styles.errorText}>{errors.betalningsmottagarId}</div>
         )}
       </div>
       
       <div className={styles.formGroup}>
         <label htmlFor="franvaroDatum" className={styles.label}>
-          Absence Date:
+          Absence Date: {period ? `(Period: ${period})` : ''}
         </label>
         <input
           type="date"
@@ -208,9 +262,11 @@ const FranvaroForm: React.FC<FranvaroFormProps> = ({
           value={formData.franvaroDatum}
           onChange={handleChange}
           className={styles.input}
+          min={periodStart}
+          max={periodEnd}
         />
         {errors.franvaroDatum && (
-          <div style={{ color: 'red' }}>{errors.franvaroDatum}</div>
+          <div className={styles.errorText}>{errors.franvaroDatum}</div>
         )}
       </div>
       
@@ -229,7 +285,7 @@ const FranvaroForm: React.FC<FranvaroFormProps> = ({
           <option value="FORALDRAPENNING">FORALDRAPENNING</option>
         </select>
         {errors.franvaroTyp && (
-          <div style={{ color: 'red' }}>{errors.franvaroTyp}</div>
+          <div className={styles.errorText}>{errors.franvaroTyp}</div>
         )}
       </div>
 
@@ -252,7 +308,7 @@ const FranvaroForm: React.FC<FranvaroFormProps> = ({
               className={styles.input}
             />
             {errors.franvaroProcentFP && (
-              <div style={{ color: 'red' }}>{errors.franvaroProcentFP}</div>
+              <div className={styles.errorText}>{errors.franvaroProcentFP}</div>
             )}
           </div>
           
@@ -273,7 +329,7 @@ const FranvaroForm: React.FC<FranvaroFormProps> = ({
               className={styles.input}
             />
             {errors.franvaroTimmarFP && (
-              <div style={{ color: 'red' }}>{errors.franvaroTimmarFP}</div>
+              <div className={styles.errorText}>{errors.franvaroTimmarFP}</div>
             )}
           </div>
         </>
@@ -298,7 +354,7 @@ const FranvaroForm: React.FC<FranvaroFormProps> = ({
               className={styles.input}
             />
             {errors.franvaroProcentTFP && (
-              <div style={{ color: 'red' }}>{errors.franvaroProcentTFP}</div>
+              <div className={styles.errorText}>{errors.franvaroProcentTFP}</div>
             )}
           </div>
           
@@ -319,7 +375,7 @@ const FranvaroForm: React.FC<FranvaroFormProps> = ({
               className={styles.input}
             />
             {errors.franvaroTimmarTFP && (
-              <div style={{ color: 'red' }}>{errors.franvaroTimmarTFP}</div>
+              <div className={styles.errorText}>{errors.franvaroTimmarTFP}</div>
             )}
           </div>
         </>

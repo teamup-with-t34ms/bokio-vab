@@ -54,7 +54,7 @@ const XMLUploader: React.FC<XMLUploaderProps> = ({ onFileUpload }) => {
   return (
     <div className={styles.card}>
       <h2 className={styles.cardTitle}>Upload XML File</h2>
-      <div className={styles.form}>
+      <div className={styles.fileUploadForm}>
         <div className={styles.formGroup}>
           <label className={styles.label} htmlFor="xmlFile">
             Select an XML file:
@@ -65,25 +65,21 @@ const XMLUploader: React.FC<XMLUploaderProps> = ({ onFileUpload }) => {
             id="xmlFile"
             accept=".xml"
             onChange={handleFileChange}
-            className={styles.input}
+            className={`${styles.input} ${styles.fileInput}`}
           />
         </div>
-        
+
         {fileName && (
-          <p>
+          <p className={styles.fileName}>
             <strong>Selected file:</strong> {fileName}
           </p>
         )}
-        
-        {error && (
-          <p style={{ color: 'red' }}>
-            {error}
-          </p>
-        )}
-        
-        <button 
-          onClick={handleReset} 
-          className={`${styles.button} ${styles.buttonSecondary}`}
+
+        {error && <p className={styles.errorText}>{error}</p>}
+
+        <button
+          onClick={handleReset}
+          className={`${styles.button} ${styles.buttonSecondary} ${styles.resetButton}`}
         >
           Reset
         </button>

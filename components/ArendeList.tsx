@@ -120,75 +120,106 @@ const ArendeList: React.FC<ArendeListProps> = ({ arendeList, onFranvaroUpdate })
     onFranvaroUpdate(arendeIndex, existingFranvaro);
   };
 
+  // Parse period string (YYYYMM) to get the first and last day of the month
+  const getPeriodDates = (period: string): { firstDay: string, lastDay: string } => {
+    if (!period || period.length !== 6) {
+      const today = new Date();
+      return {
+        firstDay: today.toISOString().split('T')[0],
+        lastDay: today.toISOString().split('T')[0]
+      };
+    }
+
+    const year = parseInt(period.substring(0, 4), 10);
+    const month = parseInt(period.substring(4, 6), 10) - 1; // 0-indexed months
+    
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0); // Last day of month
+    
+    return {
+      firstDay: firstDay.toISOString().split('T')[0],
+      lastDay: lastDay.toISOString().split('T')[0]
+    };
+  };
+
   if (arendeList.length === 0) {
-    return <div>No Arendeinformation found in the XML file.</div>;
+    return <div>No employees found in the XML file.</div>;
   }
 
   return (
     <div className={styles.card}>
       <h2 className={styles.cardTitle}>Employee List</h2>
       <ul className={styles.list}>
-        {arendeList.map((arende, index) => (
-          <li key={index} className={styles.listItem}>
-            <div>
-              <strong>Personal ID:</strong> {arende.betalningsmottagarId}
-              {' - '}
-              <strong>Period:</strong> {arende.period}
-              <button 
-                onClick={() => toggleExpand(index)} 
-                className={styles.button}
-              >
-                {expandedArende === index ? 'Hide Details' : 'Show Details'}
-              </button>
-            </div>
-            
-            {expandedArende === index && (
-              <div style={{ marginTop: '1rem' }}>
-                <h3>Current Franvarouppgift Entries</h3>
-                
-                {arende.franvaroList && arende.franvaroList.length > 0 ? (
-                  <ul>
-                    {arende.franvaroList.map((franvaro: any, franvaroIndex: number) => (
-                      <li key={franvaroIndex} style={{ marginBottom: '1rem' }}>
-                        <div><strong>Personal ID:</strong> {franvaro.BetalningsmottagarId?._text}</div>
-                        <div><strong>Date:</strong> {franvaro.FranvaroDatum?._text}</div>
-                        <div><strong>Type:</strong> {franvaro.FranvaroTyp?._text}</div>
-                        <div><strong>Specification #:</strong> {franvaro.FranvaroSpecifikationsnummer?._text}</div>
-                        {franvaro.FranvaroProcentFP && (
-                          <div><strong>FP %:</strong> {franvaro.FranvaroProcentFP._text}</div>
-                        )}
-                        {franvaro.FranvaroTimmarFP && (
-                          <div><strong>FP Hours:</strong> {franvaro.FranvaroTimmarFP._text}</div>
-                        )}
-                        {franvaro.FranvaroProcentTFP && (
-                          <div><strong>TFP %:</strong> {franvaro.FranvaroProcentTFP._text}</div>
-                        )}
-                        {franvaro.FranvaroTimmarTFP && (
-                          <div><strong>TFP Hours:</strong> {franvaro.FranvaroTimmarTFP._text}</div>
-                        )}
-                        <button 
-                          onClick={() => handleRemoveFranvaro(index, franvaroIndex)} 
-                          className={`${styles.button} ${styles.buttonDanger}`}
-                        >
-                          Remove
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No Franvarouppgift entries for this employee.</p>
-                )}
-                
-                <h3>Add New Franvarouppgift</h3>
-                <FranvaroForm 
-                  onSubmit={(data) => handleAddFranvaro(index, data)} 
-                  betalningsmottagarId={arende.betalningsmottagarId}
-                  lastAddedDate={lastAddedDates[index]}
-                />
+        {arendeList.map((arende, index) => {
+          const { firstDay, lastDay } = getPeriodDates(arende.period);
+          return (
+            <li key={index} className={styles.listItem}>
+              <div className={styles.listItemHeader}>
+                <div className={styles.employeeInfo}>
+                  <strong>Personal ID:</strong> {arende.betalningsmottagarId}
+                  {' - '}
+                  <strong>Period:</strong> {arende.period}
+                </div>
+                <button 
+                  onClick={() => toggleExpand(index)} 
+                  className={styles.iconButton}
+                  aria-label={expandedArende === index ? "Collapse" : "Expand"}
+                >
+                  {expandedArende === index ? '−' : '+'}
+                </button>
               </div>
-            )}
-          </li>
-        ))}
+              
+              {expandedArende === index && (
+                <div className={styles.expandedContent}>
+                  <h3>Current Absence Records</h3>
+                  
+                  {arende.franvaroList && arende.franvaroList.length > 0 ? (
+                    <ul className={styles.franvaroList}>
+                      {arende.franvaroList.map((franvaro: any, franvaroIndex: number) => (
+                        <li key={franvaroIndex} className={styles.franvaroItem}>
+                          <div className={styles.franvaroItemContent}><strong>Personal ID:</strong> {franvaro.BetalningsmottagarId?._text}</div>
+                          <div className={styles.franvaroItemContent}><strong>Date:</strong> {franvaro.FranvaroDatum?._text}</div>
+                          <div className={styles.franvaroItemContent}><strong>Type:</strong> {franvaro.FranvaroTyp?._text}</div>
+                          <div className={styles.franvaroItemContent}><strong>Specification #:</strong> {franvaro.FranvaroSpecifikationsnummer?._text}</div>
+                          {franvaro.FranvaroProcentFP && (
+                            <div className={styles.franvaroItemContent}><strong>FP %:</strong> {franvaro.FranvaroProcentFP._text}</div>
+                          )}
+                          {franvaro.FranvaroTimmarFP && (
+                            <div className={styles.franvaroItemContent}><strong>FP Hours:</strong> {franvaro.FranvaroTimmarFP._text}</div>
+                          )}
+                          {franvaro.FranvaroProcentTFP && (
+                            <div className={styles.franvaroItemContent}><strong>TFP %:</strong> {franvaro.FranvaroProcentTFP._text}</div>
+                          )}
+                          {franvaro.FranvaroTimmarTFP && (
+                            <div className={styles.franvaroItemContent}><strong>TFP Hours:</strong> {franvaro.FranvaroTimmarTFP._text}</div>
+                          )}
+                          <button 
+                            onClick={() => handleRemoveFranvaro(index, franvaroIndex)} 
+                            className={`${styles.button} ${styles.buttonDanger}`}
+                          >
+                            Remove
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No absence records for this employee.</p>
+                  )}
+                  
+                  <h3>Add New Absence Record</h3>
+                  <FranvaroForm 
+                    onSubmit={(data) => handleAddFranvaro(index, data)} 
+                    betalningsmottagarId={arende.betalningsmottagarId}
+                    lastAddedDate={lastAddedDates[index]}
+                    periodStart={firstDay}
+                    periodEnd={lastDay}
+                    period={arende.period}
+                  />
+                </div>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
