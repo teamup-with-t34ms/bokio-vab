@@ -1,0 +1,116 @@
+.container {
+  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.title {
+  margin: 0 0 2rem;
+  line-height: 1.15;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.validationErrors {
+  background-color: #ffeeee;
+  border: 1px solid #ffaaaa;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.validationErrors ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+/* Form styles */
+.form {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  margin-top: 1rem;
+}
+
+.button:hover {
+  background-color: #0060d3;
+}
+
+.buttonSecondary {
+  background-color: #6c757d;
+}
+
+.buttonSecondary:hover {
+  background-color: #5a6268;
+}
+
+.buttonDanger {
+  background-color: #dc3545;
+}
+
+.buttonDanger:hover {
+  background-color: #c82333;
+}
+
+.card {
+  margin: 1rem 0;
+  padding: 1.5rem;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  width: 100%;
+  background-color: #fafafa;
+}
+
+.cardTitle {
+  margin-top: 0;
+  color: #0070f3;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.listItem {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid #eaeaea;
+}
